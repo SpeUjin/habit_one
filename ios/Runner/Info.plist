@@ -45,5 +45,13 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+    <array>
+      <string>fetch</string>
+      <string>remote-notification</string>
+    </array>
+
+    <key>NSUserNotificationAlertUsageDescription</key>
+    <string>알림을 보내기 위해 권한이 필요합니다.</string>
 </dict>
 </plist>
