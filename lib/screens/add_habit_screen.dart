@@ -20,7 +20,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
   TimeOfDay? _reminderTime;
   late String _memo;
 
-  final List<String> _weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  final List<String> _weekDays = ['월', '화', '수', '목', '금', '토', '일'];
 
   // TextEditingController를 쓰는 방법도 있지만 여기선 initialValue만 설정할게요
   @override

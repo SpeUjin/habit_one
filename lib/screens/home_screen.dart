@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../providers/habit_provider.dart';
 import 'add_habit_screen.dart';
 import 'habit_detail_screen.dart';
+import 'statistics_page.dart';  // 통계페이지 import 추가
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -19,6 +21,31 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _showConfirmationDialog(BuildContext context, HabitProvider provider, String id) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('습관 완료 확인'),
+          content: const Text('오늘 이 습관을 완료로 처리하시겠어요?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: const Text('아니오'),
+            ),
+            TextButton(
+              onPressed: () {
+                provider.toggleCompletion(id); // 완료 처리
+                Navigator.of(dialogContext).pop();
+              },
+              child: const Text('예'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final habitProvider = Provider.of<HabitProvider>(context);
@@ -26,6 +53,20 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('1일 1습관'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.bar_chart),
+            tooltip: '통계',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => StatisticsPage(habits: habitProvider.habits),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: ListView.builder(
         itemCount: habitProvider.habits.length,
@@ -49,11 +90,16 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ListTile(
               title: Text(habit.title),
               subtitle: Text('반복 요일: ${habit.days.join(", ")}'),
-              trailing: Checkbox(
-                value: habit.isCompletedToday,
-                onChanged: (val) {
-                  habitProvider.toggleCompletion(habit.id);
+              trailing: ElevatedButton(
+                onPressed: habit.isCompletedToday
+                    ? null // 오늘 완료되면 버튼 비활성화
+                    : () {
+                  _showConfirmationDialog(context, habitProvider, habit.id);
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: habit.isCompletedToday ? Colors.grey : Colors.blue,
+                ),
+                child: Text(habit.isCompletedToday ? '완료됨' : '오늘 완료'),
               ),
               // ListTile onTap 수정
               onTap: () {

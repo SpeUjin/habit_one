@@ -4,11 +4,13 @@ import 'package:uuid/uuid.dart';
 class Habit {
   final String id;
   String title;
-  List<String> days; // 요일: ["Mon", "Tue", ...]
+  List<String> days;
   String? memo;
   TimeOfDay? alarmTime;
   bool isCompletedToday;
+  DateTime? lastCompletedDate;
   final DateTime createdAt;
+  Map<String, bool> dailyCompletion; // 날짜(yyyy-MM-dd) : 완료여부
 
   Habit({
     String? id,
@@ -18,6 +20,8 @@ class Habit {
     this.alarmTime,
     this.isCompletedToday = false,
     DateTime? createdAt,
+    this.lastCompletedDate,          // 추가
+    this.dailyCompletion = const {},  // 초기값 빈 맵
   })  : id = id ?? const Uuid().v4(), // UUID 생성
         createdAt = createdAt ?? DateTime.now();
 
@@ -27,13 +31,19 @@ class Habit {
     List<String>? days,
     TimeOfDay? alarmTime,
     String? memo,
+    bool? isCompletedToday,         // 추가
+    DateTime? lastCompletedDate,    // 추가
+    Map<String, bool>? dailyCompletion,
   }) {
     return Habit(
       id: id ?? this.id,
       title: title ?? this.title,
       days: days ?? this.days,
       alarmTime: alarmTime ?? this.alarmTime,
-      memo: memo ?? this.memo,
+      isCompletedToday: isCompletedToday ?? this.isCompletedToday,
+      lastCompletedDate: lastCompletedDate ?? this.lastCompletedDate,
+      dailyCompletion: dailyCompletion ?? this.dailyCompletion,
+      createdAt: this.createdAt,
     );
   }
 
@@ -48,6 +58,7 @@ class Habit {
       'alarmMinute': alarmTime?.minute,
       'isCompletedToday': isCompletedToday,
       'createdAt': createdAt.toIso8601String(),
+      'dailyCompletion': dailyCompletion,
     };
   }
 
@@ -63,6 +74,7 @@ class Habit {
           : null,
       isCompletedToday: json['isCompletedToday'] ?? false,
       createdAt: DateTime.parse(json['createdAt']),
+      dailyCompletion: Map<String, bool>.from(json['dailyCompletion'] ?? {}),
     );
   }
 }
