@@ -22,9 +22,41 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _showConfirmationDialog(BuildContext context, HabitProvider provider, String id) {
+    final now = DateTime.now();
+    final weekdays = ['월', '화', '수', '목', '금', '토', '일'];
+    final todayStr = weekdays[now.weekday - 1];
+
+    // id로 Habit을 찾아오기
+    final habit = provider.habits.firstWhere((h) => h.id == id);
+
+    // 오늘 요일이 습관 반복 요일에 없으면 알림 다이얼로그만 띄우고 반환
+    if (!habit.days.contains(todayStr)) {
+      showDialog(
+        context: context,
+        builder: (alertContext) {
+          return AlertDialog(
+            title: const Text('알림'),
+            content: const Text('오늘은 완료할 수 없는 습관입니다.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(alertContext).pop();
+                  // 상태 갱신이 필요하면 setState 사용
+                  setState(() {});
+                },
+                child: const Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
+    // 오늘 요일이 포함되어 있으면 완료 토글 확인 다이얼로그
     showDialog(
       context: context,
-      builder: (BuildContext dialogContext) {
+      builder: (dialogContext) {
         return AlertDialog(
           title: const Text('습관 완료 확인'),
           content: const Text('오늘 이 습관을 완료로 처리하시겠어요?'),
@@ -35,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             TextButton(
               onPressed: () {
-                provider.toggleCompletion(id); // 완료 처리
+                provider.toggleCompletion(id, now);
                 Navigator.of(dialogContext).pop();
               },
               child: const Text('예'),
