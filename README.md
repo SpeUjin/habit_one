@@ -6,7 +6,8 @@ Flutter로 개발한 간단한 습관 형성 앱입니다.
 ---
 
 ## 프로젝트 문서 및 간트차트
-[프로젝트 문서 및 간트차트 - 노션](https://www.notion.so/Habit-One-20357b6a89d58034a1e1e9424e191abf?source=copy_link)
+[프로젝트 문서 - 노션](https://www.notion.so/20557b6a89d58073a6bbc9615ba51ded?source=copy_link)
+[간트차트 - 노션](https://www.notion.so/Habit-One-20357b6a89d58034a1e1e9424e191abf?source=copy_link)
 
 ---
 
