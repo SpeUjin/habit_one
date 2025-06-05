@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC), // 매우 연한 하늘색 배경
       appBar: AppBar(
-        title: const Text('1일 1습관'),
+        title: const Text('Habit One'),
         centerTitle: true,
         elevation: 0,
         backgroundColor: const Color(0xFFD9EAFD), // 밝은 하늘색

@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false, // 디버그 배너 제거
-      title: '1일 1습관',
+      title: 'Habit One',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         useMaterial3: true,
