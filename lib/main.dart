@@ -4,6 +4,9 @@ import 'providers/habit_provider.dart';
 import 'screens/home_screen.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
+import 'dart:html' as html;
+import 'dart:async';
+
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 FlutterLocalNotificationsPlugin();
@@ -31,6 +34,7 @@ void main() async {
   tz.initializeTimeZones(); // ✅ 시간대 초기화
   await initializeNotifications(); // ✅ 알림 초기화
 
+
   runApp(
     MultiProvider(
       providers: [
@@ -39,6 +43,7 @@ void main() async {
       child: const MyApp(),
     ),
   );
+
 }
 
 class MyApp extends StatelessWidget {

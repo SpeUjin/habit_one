@@ -33,6 +33,91 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+<div id="loading">
+  <div class="splash-container">
+    <img src="logo.png" alt="App Logo" class="splash-logo" />
+    <p class="splash-text">좋은 습관을 꾸준히 하러 가는 중...</p>
+    <div class="spinner"></div>
+  </div>
+</div>
+
+<style>
+  /* 전체 화면 배경색 */
+  #loading {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: #F8FAFC;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    z-index: 9999;
+  }
+
+  /* 컨테이너 */
+  .splash-container {
+    display: flex;
+    flex-direction: column; /* 👈 추가 */
+    align-items: center;
+    text-align: center;
+}
+
+  /* 로고 이미지 */
+  .splash-logo {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 16px;
+  }
+
+  /* 문구 */
+  .splash-text {
+    font-size: 18px;
+    color: #9AA6B2;
+    margin-bottom: 16px;
+  }
+
+  /* 로딩 애니메이션 */
+  .spinner {
+    border: 4px solid #D9EAFD;
+    border-top: 4px solid #9AA6B2;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg);}
+    100% { transform: rotate(360deg);}
+  }
+</style>
+<script>
+  // 1️⃣ 로딩 화면을 최소 2초간 유지
+  const minLoadingTime = 2000;
+  const loadingElement = document.getElementById('loading');
+  const startTime = Date.now();
+
+  // 2️⃣ 2초 후에 Flutter를 로드
+  setTimeout(() => {
+    const script = document.createElement('script');
+    script.src = 'flutter_bootstrap.js';
+    script.async = true;
+    document.body.appendChild(script);
+  }, 0); // 바로 시작 (2초 기다리지 않고 Flutter를 바로 로드하기 위해)
+
+  // 3️⃣ Flutter가 준비되면 load 이벤트 발생 -> 로딩화면 제거
+  window.addEventListener('load', () => {
+    const elapsedTime = Date.now() - startTime;
+    const remainingTime = minLoadingTime - elapsedTime;
+
+    // 로딩화면 최소 2초 유지
+    setTimeout(() => {
+      if (loadingElement) {
+        loadingElement.style.display = 'none';
+      }
+    }, remainingTime > 0 ? remainingTime : 0);
+  });
+</script>
 </body>
 </html>
