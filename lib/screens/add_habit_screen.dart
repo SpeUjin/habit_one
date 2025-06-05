@@ -4,7 +4,6 @@ import '../models/habit.dart';
 import '../providers/habit_provider.dart';
 
 class AddHabitScreen extends StatefulWidget {
-
   final Habit? habit; // 수정 시 기존 습관 전달
   AddHabitScreen({this.habit});
 
@@ -22,7 +21,6 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
 
   final List<String> _weekDays = ['월', '화', '수', '목', '금', '토', '일'];
 
-  // TextEditingController를 쓰는 방법도 있지만 여기선 initialValue만 설정할게요
   @override
   void initState() {
     super.initState();
@@ -34,12 +32,25 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Color bgColor = Color(0xFFF8FAFC);
+    final Color lightBlue = Color(0xFFD9EAFD);
+    final Color midGrayBlue = Color(0xFFBCCCDC);
+    final Color darkGrayBlue = Color(0xFF9AA6B2);
+
     return Scaffold(
+      backgroundColor: bgColor,
       appBar: AppBar(
-        title: Text(widget.habit == null ? '습관 추가' : '습관 수정'),
+        backgroundColor: bgColor,
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          widget.habit == null ? '습관 추가' : '습관 수정',
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
+        ),
+        iconTheme: IconThemeData(color: darkGrayBlue),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 24),
         child: Form(
           key: _formKey,
           child: ListView(
@@ -47,7 +58,17 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
               // 제목 입력란
               TextFormField(
                 initialValue: _title,
-                decoration: InputDecoration(labelText: '습관 제목'),
+                decoration: InputDecoration(
+                  labelText: '습관 제목',
+                  labelStyle: TextStyle(color: Colors.black87),
+                  filled: true,
+                  fillColor: lightBlue,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                style: TextStyle(color: darkGrayBlue),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return '습관 제목을 입력해주세요';
@@ -59,17 +80,33 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                 },
               ),
 
-              SizedBox(height: 20),
+              SizedBox(height: 24),
 
-              // 반복 요일 선택
-              Text('반복 요일 선택'),
+              Text(
+                '반복 요일 선택',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  color: Colors.black87,
+                ),
+              ),
+              SizedBox(height: 12),
+
               Wrap(
                 spacing: 10,
                 children: _weekDays.map((day) {
                   final isSelected = _selectedDays.contains(day);
                   return FilterChip(
-                    label: Text(day),
+                    label: Text(
+                      day,
+                      style: TextStyle(
+                        color: isSelected ? bgColor : darkGrayBlue,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     selected: isSelected,
+                    selectedColor: darkGrayBlue,
+                    backgroundColor: lightBlue,
                     onSelected: (bool selected) {
                       setState(() {
                         if (selected) {
@@ -79,19 +116,31 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                         }
                       });
                     },
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    showCheckmark: true,
                   );
                 }).toList(),
               ),
 
-              SizedBox(height: 20),
+              SizedBox(height: 24),
 
-              // 알림 시간 선택
               ListTile(
-                title: Text('알림 시간'),
-                subtitle: Text(_reminderTime == null
-                    ? '설정 안됨'
-                    : _reminderTime!.format(context)),
-                trailing: Icon(Icons.access_time),
+                title: Text(
+                  '알림 시간',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
+                ),
+                subtitle: Text(
+                  _reminderTime == null
+                      ? '설정 안됨'
+                      : _reminderTime!.format(context),
+                  style: TextStyle(color: darkGrayBlue.withOpacity(0.7)),
+                ),
+                trailing: Icon(Icons.access_time, color: midGrayBlue),
                 onTap: () async {
                   final picked = await showTimePicker(
                     context: context,
@@ -105,23 +154,46 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                 },
               ),
 
-              SizedBox(height: 20),
+              SizedBox(height: 24),
 
-              // 메모 입력란
               TextFormField(
                 initialValue: _memo,
-                decoration: InputDecoration(labelText: '메모 (선택)'),
-                maxLines: 3,
+                decoration: InputDecoration(
+                  labelText: '메모 (선택)',
+                  labelStyle: TextStyle(color: darkGrayBlue),
+                  filled: true,
+                  fillColor: lightBlue,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                  alignLabelWithHint: true,
+                ),
+                style: TextStyle(color: darkGrayBlue),
+                maxLines: 4,
                 onSaved: (value) {
                   _memo = value?.trim() ?? '';
                 },
               ),
 
-              SizedBox(height: 30),
+              SizedBox(height: 36),
 
-              ElevatedButton(
-                onPressed: _saveHabit,
-                child: Text(widget.habit == null ? '습관 저장' : '습관 수정'),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: darkGrayBlue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    textStyle:
+                    TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: _saveHabit,
+                  child:
+                  Text(widget.habit == null ? '습관 저장' : '습관 수정'),
+                ),
               ),
             ],
           ),
@@ -144,11 +216,9 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
       final habitProvider = Provider.of<HabitProvider>(context, listen: false);
 
       if (widget.habit == null) {
-        // 새 습관 추가
         habitProvider.addHabit(_title, _selectedDays, _reminderTime, memo: _memo);
-        Navigator.pop(context); // 새 습관 추가 후 그냥 닫기
+        Navigator.pop(context);
       } else {
-        // 기존 습관 수정
         final updatedHabit = widget.habit!.copyWith(
           title: _title,
           days: _selectedDays,
@@ -156,7 +226,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
           memo: _memo,
         );
         habitProvider.updateHabit(updatedHabit);
-        Navigator.pop(context, updatedHabit); // 수정된 Habit 반환
+        Navigator.pop(context, updatedHabit);
       }
     }
   }

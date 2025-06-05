@@ -30,7 +30,8 @@ class StatisticsPage extends StatelessWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(title: const Text('습관 통계')),
+      appBar: AppBar(title: const Text('습관 통계'),
+    backgroundColor: const Color(0xFFD9EAFD),),
       body: SingleChildScrollView(
         child: Center(
           child: Padding(

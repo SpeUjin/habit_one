@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false, // 디버그 배너 제거
       title: '1일 1습관',
       theme: ThemeData(
         primarySwatch: Colors.blue,
