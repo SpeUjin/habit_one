@@ -179,7 +179,17 @@ class HabitProvider with ChangeNotifier {
       importance: Importance.max,
       priority: Priority.high,
     );
-    const platformDetails = NotificationDetails(android: androidDetails);
+    const iosDetails = DarwinNotificationDetails(
+      presentAlert: true, // 알림 표시
+      presentBadge: true, // 앱 아이콘에 뱃지 표시
+      presentSound: true, // 소리 재생
+    );
+
+// 안드로이드와 iOS(Darwin) 설정을 모두 포함
+    const platformDetails = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails, // 또는 darwin: iosDetails
+    );
 
     for (String day in days) {
       int? weekday = _weekdayMap[day];
