@@ -5,7 +5,7 @@ Flutter로 개발한 간단한 습관 형성 앱입니다.
 
 ---
 
-> [프로젝트 문서 - PDF ](프로젝트문서.pdf)
+> [프로젝트 문서 - PDF ]([프로젝트문서.pdf](https://raw.githubusercontent.com/SpeUjin/habit_one/refs/heads/master/프로젝트문서.pdf))
 
 ---
 ## 프로젝트 문서 및 간트차트
